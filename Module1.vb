@@ -11,21 +11,18 @@
         Public name As String
         Public damage As Integer
     End Structure
-    Function weapons()
 
+    Structure living_entity
+        Public name As String
+        Public lifeTotal As Integer
+        Public damage As Integer
+    End Structure
 
-    End Function
-
-    Function livingEntity()
-
-
-    End Function
-
-    Function Trap()
-
-
-    End Function
-    Sub SetUp()
+    Structure trap
+        Public name As String
+        Public correct_option As String
+    End Structure
+    Sub Main()
         Dim thePlayer As player
         Dim theWeapon As weapon
 
@@ -39,7 +36,41 @@
         Console.WriteLine("Today you will attack you foes with your " & theWeapon.name)
 
         Console.Read()
+
     End Sub
+
+    Function Weapons(ByRef theWeapon As weapon)
+        Select Case d20
+            Case 1
+                theWeapon.name = "Sword"
+                theWeapon.damage = 5
+            Case 2
+                theWeapon.name = "Slightly Bigger Sword TM"
+                theWeapon.damage = 10
+        End Select
+
+        Return theWeapon
+    End Function
+
+    Function livingEntity(ByRef mob As living_entity)
+        Select Case d20
+            Case 1
+
+            Case 2
+
+        End Select
+        Return mob
+    End Function
+
+    Function encounter(ByRef trap As trap)
+        Select Case d20
+            Case 1
+
+            Case 2
+
+        End Select
+        Return trap
+    End Function
 
     Sub Level_1()
 
