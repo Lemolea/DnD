@@ -1,17 +1,40 @@
 ﻿Module Module1
 
+    Structure player
+        Public name As String
+        Public lifeTotal As Integer
+        Public gold As Integer
+        Public weapon As weapon
+    End Structure
+
+    Structure weapon
+        Public name As String
+        Public damage As Integer
+    End Structure
+
+
     Sub Main()
 
-        Dim playerName As String
-        Dim playerClass As String
-
+        Dim player1 As player
 
         Console.Write("So, what would you like to be called?")
-        playerName = Console.ReadLine()
-        Console.Write("And what about your class?")
-        playerClass = Console.ReadLine()
+        player1.name = Console.ReadLine()
+
 
         Console.Read()
     End Sub
+
+
+
+
+    Function weapons()
+
+
+    End Function
+
+    Function encounters()
+
+
+    End Function
 
 End Module
