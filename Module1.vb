@@ -1,7 +1,5 @@
 ﻿Imports System.Threading
 Module Module1
-    Public u_bound As Integer
-
     Structure player
         Public name As String
         Public lifeTotal As Integer
@@ -37,14 +35,14 @@ Module Module1
     Function Dice(ByRef u_bound As Integer)
         Dim roll As New Random
         roll = New Random
-        Return roll.Next(1, u_bound)
+        Return roll.Next(0, u_bound)
     End Function
 
     Sub Main()
         Dim thePlayer As player
         Dim theWeapon As weapon
 
-        thePlayer.lifeTotal = 20
+        thePlayer.lifeTotal = 25
         thePlayer.gold = 0
         theWeapon.name = "fists"
         theWeapon.damage = 2
@@ -57,6 +55,8 @@ Module Module1
         Console.WriteLine("Today you will attack your foes with your " & theWeapon.name)
 
         Level_1(thePlayer, theWeapon)
+        Level_2(thePlayer, theWeapon)
+        Level_3(thePlayer, theWeapon)
 
     End Sub
 
@@ -356,6 +356,8 @@ Module Module1
                     Console.WriteLine("There is no going back. You die")
                     Thread.Sleep(2000)
                     End
+                ElseIf choice.ToLower = "no" Then
+                    living.lifeTotal = 0
                 End If
             Else
                 Console.WriteLine("I'm sorry. You seem to have died.")
@@ -420,17 +422,17 @@ Module Module1
         Weapon_keep = Console.ReadLine()
         While valid = False
             If Weapon_keep.ToLower = "yes" Then
-            Console.Clear()
+                Console.Clear()
                 Console.WriteLine("You pick up your new, shiny weapon!")
                 theWeapon = Weapon_pending
                 valid = True
             ElseIf Weapon_keep.ToLower = "no" Then
-            Console.Clear()
+                Console.Clear()
                 Console.WriteLine("Okay. Suit yourself. You march on toward your death.")
                 valid = True
             Else
-            Console.WriteLine("That wasn't an option. Yes or no, please.")
-        End If
+                Console.WriteLine("That wasn't an option. Yes or no, please.")
+            End If
         End While
 
         Console.WriteLine("You enter into your first room armed with your trusty " & theWeapon.name)
@@ -441,7 +443,7 @@ Module Module1
         Dim choice As String
         Dim gold As Integer = Dice(10)
         Dim living As living_entity
-        living.name = "Smol Grumpy Dragon"
+        living.name = "Small Grumpy Dragon"
         living.lifeTotal = 20
         living.damage = 5
         living.ac = 5
@@ -467,6 +469,9 @@ Module Module1
             Console.WriteLine("There is no going back, you-")
             Thread.Sleep(4000)
             Console.WriteLine("Wait. You seem to walk straight past the small dragon. He does not care... I guess you proceed then.")
+        ElseIf choice.ToLower = "no" Then
+            living.lifeTotal = 0
+            win = True
         End If
 
         Weapon_pending = Weapons(theWeapon, level)
@@ -496,16 +501,16 @@ Module Module1
         End If
 
         Console.ReadLine()
-        Call Level_2(thePlayer, theWeapon)
 
     End Sub
     Sub Level_2(ByRef thePlayer As player, ByRef theWeapon As weapon)
+        thePlayer.lifeTotal = 40
         Console.Clear()
         Dim level As Integer = 10
         Console.WriteLine("You proceed down a staircase to the next floor of the cave.")
         Call Living_Attack(thePlayer, theWeapon, level)
         Console.WriteLine("You walk past the body and continue down a dark corridor.")
-        'Call encounter_solve
+        Call Encounter_Solve(thePlayer, theWeapon)
         Call Living_Attack(thePlayer, theWeapon, level)
         Console.WriteLine("You walk past the body and continue through a door.")
 
@@ -521,15 +526,33 @@ Module Module1
 
         Console.WriteLine("You open a door to find... A shop? The vendor appears to be an alien." & vbCrLf & "What do you do? Talk or Attack?")
         choice = Console.ReadLine()
+        win = False
+
         If choice.ToLower = "attack" Then
             Console.Clear()
             Combat(thePlayer, theWeapon, living)
             Thread.Sleep(3000)
-            win = True
         ElseIf choice.ToLower = "talk" Then
             Console.Clear()
             Console.WriteLine("You say hello to the alien. He seems friendly and offers you to browse his wares. Or at least you think so. You don't understand his language." & vbCrLf & "In his store are various sundries, such as weapons, potions and more." & vbCrLf & "Do you take any?")
             choice = Console.ReadLine()
+            If choice = "yes" Then
+                Console.WriteLine("The alien does not appreciate you touching his items. He attacks you. Do you fight back?")
+                choice = Console.ReadLine()
+                If choice = "Yes" Then
+                    Console.WriteLine("You wield your " & theWeapon.name & " bravely and prepare to fight.")
+                    Console.Clear()
+                    Combat(thePlayer, theWeapon, living)
+                    Thread.Sleep(2000)
+                ElseIf choice = "no" Then
+                    Console.Clear()
+                    Console.WriteLine("The alien kills you. What else did you expect?")
+                    Thread.Sleep(3000)
+                    End
+                End If
+            ElseIf choice = "no" Then
+                Console.WriteLine("The alien appreciates this. He gladly allows you to pass.")
+            End If
             End
         Else
             Console.WriteLine("I gave you two choices. Pick one.")
@@ -538,40 +561,37 @@ Module Module1
         Dim Weapon_pending As weapon = Weapons(theWeapon, level)
         Dim Weapon_keep As String
         gold = Dice(10)
-        If win = True Then
-            Console.WriteLine("Aha! You defeat the foul beast! Would you like to loot it?")
-            loot = Console.ReadLine()
-            If loot.ToLower = "yes" Then
+
+        Console.WriteLine("You find some items on your way out. Would you like to take them?")
+        loot = Console.ReadLine()
+        If loot.ToLower = "yes" Then
+            Console.Clear()
+            thePlayer.gold = thePlayer.gold + gold
+            Console.WriteLine("You punch your hand right into the small dragon's gut and pull " & gold & " gold out of it. Sweet.")
+            Console.WriteLine("When you kick the small creature's corpse out of your path, you find a " & Weapon_pending.name & "! Do you keep it?")
+            Weapon_keep = Console.ReadLine()
+            If Weapon_keep.ToLower = "yes" Then
                 Console.Clear()
-                thePlayer.gold = thePlayer.gold + gold
-                Console.WriteLine("You punch your hand right into the small dragon's gut and pull " & gold & " gold out of it. Sweet.")
-                Console.WriteLine("When you kick the small creature's corpse out of your path, you find a " & Weapon_pending.name & "! Do you keep it?")
-                Weapon_keep = Console.ReadLine()
-                If Weapon_keep.ToLower = "yes" Then
-                    Console.Clear()
-                    Console.WriteLine("You drop your previous weapon, pick up the new one and move on with your life.")
-                    theWeapon = Weapon_pending
-                ElseIf Weapon_keep.ToLower = "no" Then
-                    Console.Clear()
-                    Console.WriteLine("Okay. Suit yourself. You ignore the weapon and move on.")
-                Else
-                    Console.WriteLine("That wasn't an option. Yes or no, please.")
-                End If
-            ElseIf loot.ToLower = "no" Then
-                Console.WriteLine("Okay. Suit yourself. You ignore the corpse and move on.")
+                Console.WriteLine("You drop your previous weapon, pick up the new one and move on with your life.")
+                theWeapon = Weapon_pending
+            ElseIf Weapon_keep.ToLower = "no" Then
+                Console.Clear()
+                Console.WriteLine("Okay. Suit yourself. You ignore the weapon and move on.")
+            Else
+                Console.WriteLine("That wasn't an option. Yes or no, please.")
             End If
+        ElseIf loot.ToLower = "no" Then
+            Console.WriteLine("Okay. Suit yourself. You ignore the corpse and move on.")
         End If
 
         Console.Clear()
         Console.ReadLine()
 
-
-        Call Level_3(thePlayer, theWeapon)
     End Sub
     Sub Level_3(ByRef thePlayer As player, ByRef theWeapon As weapon)
         Console.Clear()
         Dim level As Integer = 15
-        Call Level_4(thePlayer, theWeapon)
+
     End Sub
     Sub Level_4(ByRef thePlayer As player, ByRef theWeapon As weapon)
         Console.Clear()
