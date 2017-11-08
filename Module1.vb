@@ -35,7 +35,7 @@ Module Module1
     Function Dice(ByRef u_bound As Integer)
         Dim roll As New Random
         roll = New Random
-        Return roll.Next(0, u_bound)
+        Return roll.Next(1, u_bound)
     End Function
 
     Sub Main()
@@ -48,13 +48,13 @@ Module Module1
         theWeapon.damage = 2
         thePlayer.weapon = theWeapon
 
-        'Console.WriteLine("You sit in the same corner of the tavern as you always do and peer down into your empty mug. You consider buying a refill and check your pockets for any spare change. Alas, there is none. You just spent the last of your gold on this drink, hoping it would be enough to erase the memories of how you've gambled away every last thing you own, including your own family.As you recount these thoughts, you overhear a conversation on the other side of the tavern of a very wealthy cult that inexplicably live in a nearby cave.You stand up. You need that gold. And you need it now.")
+        Console.WriteLine("You sit in the same corner of the tavern as you always do and peer down into your empty mug. You consider buying a refill and check your pockets for any spare change. Alas, there is none. You just spent the last of your gold on this drink, hoping it would be enough to erase the memories of how you've gambled away every last thing you own, including your own family.As you recount these thoughts, you overhear a conversation on the other side of the tavern of a very wealthy cult that inexplicably live in a nearby cave.You stand up. You need that gold. And you need it now.")
 
         Console.WriteLine("So, what would you like to be called?")
         thePlayer.name = Console.ReadLine()
         Console.WriteLine("Today you will attack your foes with your " & theWeapon.name)
 
-        Level_1(thePlayer, theWeapon)
+        'Level_1(thePlayer, theWeapon)
         Level_2(thePlayer, theWeapon)
         Level_3(thePlayer, theWeapon)
 
@@ -509,9 +509,13 @@ Module Module1
         Dim level As Integer = 10
         Console.WriteLine("You proceed down a staircase to the next floor of the cave.")
         Call Living_Attack(thePlayer, theWeapon, level)
+        Console.Clear()
         Console.WriteLine("You walk past the body and continue down a dark corridor.")
         Call Encounter_Solve(thePlayer, theWeapon)
+        Console.Clear()
+
         Call Living_Attack(thePlayer, theWeapon, level)
+        Console.Clear()
         Console.WriteLine("You walk past the body and continue through a door.")
 
         Dim win As Boolean = False
@@ -526,7 +530,7 @@ Module Module1
 
         Console.WriteLine("You open a door to find... A shop? The vendor appears to be an alien." & vbCrLf & "What do you do? Talk or Attack?")
         choice = Console.ReadLine()
-        win = False
+
 
         If choice.ToLower = "attack" Then
             Console.Clear()
@@ -539,19 +543,20 @@ Module Module1
             If choice = "yes" Then
                 Console.WriteLine("The alien does not appreciate you touching his items. He attacks you. Do you fight back?")
                 choice = Console.ReadLine()
-                If choice = "Yes" Then
+                If choice.ToLower = "yes" Then
                     Console.WriteLine("You wield your " & theWeapon.name & " bravely and prepare to fight.")
                     Console.Clear()
                     Combat(thePlayer, theWeapon, living)
                     Thread.Sleep(2000)
-                ElseIf choice = "no" Then
+                ElseIf choice.tolower = "no" Then
                     Console.Clear()
                     Console.WriteLine("The alien kills you. What else did you expect?")
                     Thread.Sleep(3000)
                     End
                 End If
             ElseIf choice = "no" Then
-                Console.WriteLine("The alien appreciates this. He gladly allows you to pass.")
+                Console.WriteLine("The alien appreciates this. He gladly allows you to pass. We ran out of time. Class dismissed!")
+                Console.ReadLine()
             End If
             End
         Else
@@ -567,8 +572,8 @@ Module Module1
         If loot.ToLower = "yes" Then
             Console.Clear()
             thePlayer.gold = thePlayer.gold + gold
-            Console.WriteLine("You punch your hand right into the small dragon's gut and pull " & gold & " gold out of it. Sweet.")
-            Console.WriteLine("When you kick the small creature's corpse out of your path, you find a " & Weapon_pending.name & "! Do you keep it?")
+            Console.WriteLine("You rummage through the storage room and find " & gold & " gold. Sweet.")
+            Console.WriteLine("You also find a " & Weapon_pending.name & "! Do you keep it?")
             Weapon_keep = Console.ReadLine()
             If Weapon_keep.ToLower = "yes" Then
                 Console.Clear()
