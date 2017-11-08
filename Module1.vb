@@ -1,15 +1,15 @@
 ﻿Imports System.Threading
-
 Module Module1
+    Public u_bound As Integer
 
-    Structure Player
+    Structure player
         Public name As String
         Public lifeTotal As Integer
         Public gold As Integer
-        'Public weapon As Weapon
+        Public weapon As weapon
     End Structure
 
-    Structure Weapon
+    Structure weapon
         Public name As String
         Public damage As Integer
     End Structure
@@ -18,6 +18,7 @@ Module Module1
         Public name As String
         Public lifeTotal As Integer
         Public damage As Integer
+        Public ac As Integer
     End Structure
 
     Structure trap
@@ -31,46 +32,215 @@ Module Module1
         Public correctAnswer_1 As String
         Public wrongAnswer_2 As String
         Public wrongAnswer_3 As String
-
     End Structure
 
-    Function diceRoll(ByRef upperBound As Integer)
+    Function Dice(ByRef u_bound As Integer)
         Dim roll As New Random
         roll = New Random
-        Return roll.Next(1, upperBound)
+        Return roll.Next(1, u_bound)
     End Function
 
-    Function Weapons(ByRef theWeapon As Weapon)
-        Select Case diceRoll(2)
-            Case 1
-                theWeapon.name = "Fist"
+    Sub Main()
+        Dim thePlayer As player
+        Dim theWeapon As weapon
+
+        thePlayer.lifeTotal = 20
+        thePlayer.gold = 0
+        theWeapon.name = "fists"
+        theWeapon.damage = 2
+        thePlayer.weapon = theWeapon
+
+        'Console.WriteLine("You sit in the same corner of the tavern as you always do and peer down into your empty mug. You consider buying a refill and check your pockets for any spare change. Alas, there is none. You just spent the last of your gold on this drink, hoping it would be enough to erase the memories of how you've gambled away every last thing you own, including your own family.As you recount these thoughts, you overhear a conversation on the other side of the tavern of a very wealthy cult that inexplicably live in a nearby cave.You stand up. You need that gold. And you need it now.")
+
+        Console.WriteLine("So, what would you like to be called?")
+        thePlayer.name = Console.ReadLine()
+        Console.WriteLine("Today you will attack your foes with your " & theWeapon.name)
+
+        Level_1(thePlayer, theWeapon)
+
+    End Sub
+
+    Function Weapons(ByRef theWeapon As weapon, ByRef level As Integer)
+        Select Case Dice(level)
+            Case 0
+                theWeapon.name = "Fists"
                 theWeapon.damage = 1
-            Case 2
+            Case 1
                 theWeapon.name = "Sword"
                 theWeapon.damage = 5
-            Case 3
+            Case 2
                 theWeapon.name = "Slightly Bigger Sword TM"
+                theWeapon.damage = 7
+            Case 3
+                theWeapon.name = "Bow"
+                theWeapon.damage = 8
+            Case 4
+                theWeapon.name = "Human arm"
+                theWeapon.damage = 4
+            Case 5
+                theWeapon.name = "Wooden plank" 'Level 1 max
+                theWeapon.damage = 3
+            Case 6
+                theWeapon.name = "Gun"
+                theWeapon.damage = 12
+            Case 7
+                theWeapon.name = "Very Big Sword"
+                theWeapon.damage = 15
+            Case 8
+                theWeapon.name = "Holy Sword of Fire"
+                theWeapon.damage = 20
+            Case 9
+                theWeapon.name = "Axe Guitar"
                 theWeapon.damage = 10
+            Case 10
+                theWeapon.name = "'Magic: the Gathering TM' Card Deck" 'Level 2 max
+                theWeapon.damage = 13
+            Case 11
+                theWeapon.name = "The Vendor's Vapourising Ray"
+                theWeapon.damage = 21
+            Case 12
+                theWeapon.name = "Battle Axe"
+                theWeapon.damage = 17
+            Case 13
+                theWeapon.name = "Boomerang"
+                theWeapon.damage = 15
+            Case 14
+                theWeapon.name = "Pepper Spray"
+                theWeapon.damage = 18
+            Case 15
+                theWeapon.name = "Golf Club" 'Level 3 max
+                theWeapon.damage = 16
+            Case 16
+                theWeapon.name = "Multiple Bombs"
+                theWeapon.damage = 22
+            Case 17
+                theWeapon.name = "Hope"
+                theWeapon.damage = 28
+            Case 18
+                theWeapon.name = "Kindness"
+                theWeapon.damage = 25
+            Case 19
+                theWeapon.name = "A rock. A big rock"
+                theWeapon.damage = 23
+            Case 20
+                theWeapon.name = "The power of God himself" 'Level 4 max
+                theWeapon.damage = 100
         End Select
 
         Return theWeapon
     End Function
 
-    Function livingEntity(ByRef mob As living_entity)
-        Select Case diceRoll(2)
+    Function livingEntity(ByRef living As living_entity, ByRef level As Integer)
+        Dim whichliving As Integer = Dice(level)
+        Select Case whichliving
             Case 1
-
+                living.name = "Goblin"
+                living.lifeTotal = 4
+                living.damage = 4
+                living.ac = 5
             Case 2
-
+                living.name = "Spider"
+                living.lifeTotal = 7
+                living.damage = 3
+                living.ac = 3
+            Case 3
+                living.name = "Ghost"
+                living.lifeTotal = 3
+                living.damage = 2
+                living.ac = 6
+            Case 4
+                living.name = "Cyclops"
+                living.lifeTotal = 9
+                living.damage = 5
+                living.ac = 7
+            Case 5
+                living.name = "Butterfly" 'level 1 max
+                living.lifeTotal = 1
+                living.damage = 0
+                living.ac = 1
+            Case 6
+                living.name = "Yeti"
+                living.lifeTotal = 14
+                living.damage = 5
+                living.ac = 4
+            Case 7
+                living.name = "Cenataur"
+                living.lifeTotal = 13
+                living.damage = 7
+                living.ac = 3
+            Case 8
+                living.name = "Wolf"
+                living.lifeTotal = 14
+                living.damage = 9
+                living.ac = 5
+            Case 9
+                living.name = "Giant (Somehow)"
+                living.lifeTotal = 18
+                living.damage = 8
+                living.ac = 8
+            Case 10
+                living.name = "Human Child" 'level 2 max
+                living.lifeTotal = 7
+                living.damage = 2
+                living.ac = 2
+            Case 11
+                living.name = "19"
+                living.lifeTotal = 19
+                living.damage = 11
+                living.ac = 10
+            Case 12
+                living.name = "Raptor"
+                living.lifeTotal = 21
+                living.damage = 15
+                living.ac = 9
+            Case 13
+                living.name = "Kolbold"
+                living.lifeTotal = 25
+                living.damage = 13
+                living.ac = 3
+            Case 14
+                living.name = "Chicken"
+                living.lifeTotal = 18
+                living.damage = 11
+                living.ac = 6
+            Case 15
+                living.name = "Vampire" 'level 3 max
+                living.lifeTotal = 30
+                living.damage = 17
+                living.ac = 7
+            Case 16
+                living.name = "Tortoise"
+                living.lifeTotal = 36
+                living.damage = 20
+                living.ac = 4
+            Case 17
+                living.name = "Sorcerer"
+                living.lifeTotal = 34
+                living.damage = 22
+                living.ac = 5
+            Case 18
+                living.name = "Flying Squirrel"
+                living.lifeTotal = 31
+                living.damage = 16
+                living.ac = 6
+            Case 19
+                living.name = "The Spanish Inquisition"
+                living.lifeTotal = 29
+                living.damage = 18
+                living.ac = 9
+            Case 20
+                living.name = "Our lord and Savior, Raptor Jesus." 'level 4 max
+                living.lifeTotal = 50
+                living.damage = 30
+                living.ac = 15
         End Select
-        Return mob
+        Return living
     End Function
 
     Function Encounter() As trap
         Dim trap As trap
         Dim whichtrap As Integer
-
-        whichtrap = diceRoll(7)
+        whichtrap = Dice(7)
 
         Select Case whichtrap
             Case 1
@@ -152,31 +322,63 @@ Module Module1
         Return trap
     End Function
 
-    Sub Main()
-        Dim thePlayer As Player
-        Dim theWeapon As Weapon
+    Function Combat(ByRef thePlayer As player, ByRef theWeapon As weapon, ByRef living As living_entity)
+        Dim hit As Integer = Dice(20)
+        Dim attack As Integer
+        If hit > living.ac Then
+            attack = Dice(theWeapon.damage)
+            living.lifeTotal = living.lifeTotal - attack
+            Console.WriteLine("You hit for: " & attack & ". The enemy now has: " & living.lifeTotal & " health.")
+        Else
+            Console.WriteLine("You miss. You sad failure.")
+        End If
+        attack = Dice(living.damage)
+        thePlayer.lifeTotal = thePlayer.lifeTotal - attack
+        Console.WriteLine("The Enemy hits for: " & attack & ". You now have: " & thePlayer.lifeTotal & " health.")
+        Return living
+    End Function
 
-        thePlayer.lifeTotal = 20
-        thePlayer.gold = diceRoll(10)
-        theWeapon.name = "Fist"
-        theWeapon.damage = 1
+    Function Living_Attack(ByRef thePlayer As player, ByRef theWeapon As weapon, ByRef level As Integer)
+        Dim choice As String
+        Dim living As living_entity
+        living = livingEntity(living, level)
+        Console.WriteLine("You see a " & living.name)
+        Console.WriteLine("What would you like to do? Your options are..." & vbCrLf & "Attack or Run")
+        choice = Console.ReadLine()
+        While living.lifeTotal > 0
+            If thePlayer.lifeTotal > 0 Then
+                If choice.ToLower = "attack" Then
+                    Console.Clear()
+                    Combat(thePlayer, theWeapon, living)
+                    Thread.Sleep(2000)
+                ElseIf choice.ToLower = "run" Then
+                    Console.Clear()
+                    Console.WriteLine("There is no going back. You die")
+                    Thread.Sleep(2000)
+                    End
+                End If
+            Else
+                Console.WriteLine("I'm sorry. You seem to have died.")
+                Thread.Sleep(3000)
+                End
+            End If
+        End While
 
-        Console.WriteLine("")
+        Dim gold As Integer = Dice(10)
+        thePlayer.gold = thePlayer.gold + gold
+        Console.WriteLine("Congratulations! You recieve " & gold & " gold")
+        Return thePlayer
+        Thread.Sleep(3000)
+        Console.Clear()
 
-        Console.WriteLine("So, what would you like to be called? ")
-        thePlayer.name = Console.ReadLine()
+    End Function
 
-        Level_1(thePlayer, theWeapon)
-
-    End Sub
-
-    Sub Level_1(ByRef thePlayer As Player, ByRef theWeapon As Weapon)
+    Function Encounter_Solve(ByRef thePlayer As player, ByRef theWeapon As weapon)
         Dim trap As trap
         Dim answer As String
         Dim ans As Boolean = False
         trap = Encounter()
 
-        Console.WriteLine("You enter into your first room armed with your trusty " & theWeapon.name)
         Console.WriteLine(trap.background)
         Console.WriteLine(trap.Option_1)
         Console.WriteLine(trap.Option_2)
@@ -202,21 +404,178 @@ Module Module1
             End If
         End While
 
-        Thread.Sleep(10000)
-    End Sub
-    Sub Level_2()
-        Dim thePlayer As Player
-        thePlayer.lifeTotal = 23
+        Return thePlayer
+    End Function
+
+    Sub Level_1(ByRef thePlayer As player, ByRef theWeapon As weapon)
+        Dim level As Integer = 5
+        Console.Clear()
+        Console.WriteLine("You walk into the cave.")
+        Call Living_Attack(thePlayer, theWeapon, level)
+        Dim Weapon_pending As weapon = Weapons(theWeapon, level)
+        Dim Weapon_keep As String
+        Dim valid As Boolean = False
+
+        Console.WriteLine("Hark! The enemy dropped a " & Weapon_pending.name & "! Do you take it?")
+        Weapon_keep = Console.ReadLine()
+        While valid = False
+            If Weapon_keep.ToLower = "yes" Then
+            Console.Clear()
+                Console.WriteLine("You pick up your new, shiny weapon!")
+                theWeapon = Weapon_pending
+                valid = True
+            ElseIf Weapon_keep.ToLower = "no" Then
+            Console.Clear()
+                Console.WriteLine("Okay. Suit yourself. You march on toward your death.")
+                valid = True
+            Else
+            Console.WriteLine("That wasn't an option. Yes or no, please.")
+        End If
+        End While
+
+        Console.WriteLine("You enter into your first room armed with your trusty " & theWeapon.name)
+        Call Encounter_Solve(thePlayer, theWeapon)
+
+        Dim win As Boolean = False
+        Dim loot As String
+        Dim choice As String
+        Dim gold As Integer = Dice(10)
+        Dim living As living_entity
+        living.name = "Smol Grumpy Dragon"
+        living.lifeTotal = 20
+        living.damage = 5
+        living.ac = 5
+
+        Console.Clear()
+        Console.WriteLine("You walk into what appears to be the final room of the dungeon and look around. Your eyes fall upon a very small and very angry looking dragon." & vbCrLf & "What do you do? Attack or Run?")
+        choice = Console.ReadLine()
+        If choice.ToLower = "attack" Then
+            While living.lifeTotal > 0
+                If thePlayer.lifeTotal > 0 Then
+                    Console.Clear()
+                    Combat(thePlayer, theWeapon, living)
+                    Thread.Sleep(2000)
+                    win = True
+                Else
+                    Console.WriteLine("I'm sorry. You seem to have died.")
+                    Thread.Sleep(3000)
+                    End
+                End If
+            End While
+        ElseIf choice.ToLower = "run" Then
+            Console.Clear()
+            Console.WriteLine("There is no going back, you-")
+            Thread.Sleep(4000)
+            Console.WriteLine("Wait. You seem to walk straight past the small dragon. He does not care... I guess you proceed then.")
+        End If
+
+        Weapon_pending = Weapons(theWeapon, level)
+        gold = Dice(10)
+        If win = True Then
+            Console.WriteLine("Aha! You defeat the foul beast! Would you like to loot it?")
+            loot = Console.ReadLine()
+            If loot.ToLower = "yes" Then
+                Console.Clear()
+                thePlayer.gold = thePlayer.gold + gold
+                Console.WriteLine("You punch your hand right into the small dragon's gut and pull " & gold & " gold out of it. Sweet.")
+                Console.WriteLine("When you kick the small creature's corpse out of your path, you find a " & Weapon_pending.name & "! Do you keep it?")
+                Weapon_keep = Console.ReadLine()
+                If Weapon_keep.ToLower = "yes" Then
+                    Console.Clear()
+                    Console.WriteLine("You drop your previous weapon, pick up the new one and move on with your life.")
+                    theWeapon = Weapon_pending
+                ElseIf Weapon_keep.ToLower = "no" Then
+                    Console.Clear()
+                    Console.WriteLine("Okay. Suit yourself. You ignore the weapon and move on.")
+                Else
+                    Console.WriteLine("That wasn't an option. Yes or no, please.")
+                End If
+            ElseIf loot.ToLower = "no" Then
+                Console.WriteLine("Okay. Suit yourself. You ignore the corpse and move on.")
+            End If
+        End If
+
+        Console.ReadLine()
+        Call Level_2(thePlayer, theWeapon)
 
     End Sub
-    Sub Level_3()
-        Dim thePlayer As Player
-        thePlayer.lifeTotal = 26
+    Sub Level_2(ByRef thePlayer As player, ByRef theWeapon As weapon)
+        Console.Clear()
+        Dim level As Integer = 10
+        Console.WriteLine("You proceed down a staircase to the next floor of the cave.")
+        Call Living_Attack(thePlayer, theWeapon, level)
+        Console.WriteLine("You walk past the body and continue down a dark corridor.")
+        'Call encounter_solve
+        Call Living_Attack(thePlayer, theWeapon, level)
+        Console.WriteLine("You walk past the body and continue through a door.")
 
+        Dim win As Boolean = False
+        Dim loot As String
+        Dim choice As String
+        Dim gold As Integer = Dice(10)
+        Dim living As living_entity
+        living.name = "Alien Vendor"
+        living.lifeTotal = 20
+        living.damage = 5
+        living.ac = 5
+
+        Console.WriteLine("You open a door to find... A shop? The vendor appears to be an alien." & vbCrLf & "What do you do? Talk or Attack?")
+        choice = Console.ReadLine()
+        If choice.ToLower = "attack" Then
+            Console.Clear()
+            Combat(thePlayer, theWeapon, living)
+            Thread.Sleep(3000)
+            win = True
+        ElseIf choice.ToLower = "talk" Then
+            Console.Clear()
+            Console.WriteLine("You say hello to the alien. He seems friendly and offers you to browse his wares. Or at least you think so. You don't understand his language." & vbCrLf & "In his store are various sundries, such as weapons, potions and more." & vbCrLf & "Do you take any?")
+            choice = Console.ReadLine()
+            End
+        Else
+            Console.WriteLine("I gave you two choices. Pick one.")
+        End If
+
+        Dim Weapon_pending As weapon = Weapons(theWeapon, level)
+        Dim Weapon_keep As String
+        gold = Dice(10)
+        If win = True Then
+            Console.WriteLine("Aha! You defeat the foul beast! Would you like to loot it?")
+            loot = Console.ReadLine()
+            If loot.ToLower = "yes" Then
+                Console.Clear()
+                thePlayer.gold = thePlayer.gold + gold
+                Console.WriteLine("You punch your hand right into the small dragon's gut and pull " & gold & " gold out of it. Sweet.")
+                Console.WriteLine("When you kick the small creature's corpse out of your path, you find a " & Weapon_pending.name & "! Do you keep it?")
+                Weapon_keep = Console.ReadLine()
+                If Weapon_keep.ToLower = "yes" Then
+                    Console.Clear()
+                    Console.WriteLine("You drop your previous weapon, pick up the new one and move on with your life.")
+                    theWeapon = Weapon_pending
+                ElseIf Weapon_keep.ToLower = "no" Then
+                    Console.Clear()
+                    Console.WriteLine("Okay. Suit yourself. You ignore the weapon and move on.")
+                Else
+                    Console.WriteLine("That wasn't an option. Yes or no, please.")
+                End If
+            ElseIf loot.ToLower = "no" Then
+                Console.WriteLine("Okay. Suit yourself. You ignore the corpse and move on.")
+            End If
+        End If
+
+        Console.Clear()
+        Console.ReadLine()
+
+
+        Call Level_3(thePlayer, theWeapon)
     End Sub
-    Sub Level_4()
-        Dim thePlayer As Player
-        thePlayer.lifeTotal = 30
+    Sub Level_3(ByRef thePlayer As player, ByRef theWeapon As weapon)
+        Console.Clear()
+        Dim level As Integer = 15
+        Call Level_4(thePlayer, theWeapon)
+    End Sub
+    Sub Level_4(ByRef thePlayer As player, ByRef theWeapon As weapon)
+        Console.Clear()
+        Dim level As Integer = 20
 
     End Sub
 
